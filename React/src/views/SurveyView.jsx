@@ -2,12 +2,13 @@ import { LinkIcon, PhotoIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import TButton from "../components/core/TButton";
 import PageComponent from "../components/PageComponent";
-// import axiosClient from "../axios.js";
+import axiosClient from "../axios.js";
 import { useNavigate, useParams } from "react-router-dom";
 // import SurveyQuestions from "../components/SurveyQuestions";
 // import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
 import { useStateContext } from "../contexts/ContextProvider";
+import SurveyQuestions from "../components/SurveyQuestions";
 
 export default function SurveyView() {
     const { showToast } = useStateContext();
@@ -27,8 +28,8 @@ export default function SurveyView() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const onImageChoose = (ev) => {
-        const file = ev.target.files[0];
+    const onImageChoose = (e) => {
+        const file = e.target.files[0];
 
         const reader = new FileReader();
         reader.onload = () => {
@@ -38,13 +39,15 @@ export default function SurveyView() {
                 image_url: reader.result,
             });
 
-            ev.target.value = "";
+            e.target.value = "";
         };
         reader.readAsDataURL(file);
     };
 
-    const onSubmit = (ev) => {
-        ev.preventDefault();
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        console.log(survey);
 
         const payload = { ...survey };
         if (payload.image) {
@@ -74,10 +77,9 @@ export default function SurveyView() {
         });
     };
 
-    function onQuestionsUpdate(questions) {
+    function onSurveyUpdate(survey) {
         setSurvey({
             ...survey,
-            questions,
         });
     }
 
@@ -277,8 +279,8 @@ export default function SurveyView() {
                                 Add question
                             </button>
                             <SurveyQuestions
-                                questions={survey.questions}
-                                onQuestionsUpdate={onQuestionsUpdate}
+                                survey={survey}
+                                onSurveyUpdate={onSurveyUpdate}
                             />
                         </div>
                         <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
