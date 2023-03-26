@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\QuestionTypeEnum;
 use App\Http\Requests\SurveyStoreRequest;
 use App\Http\Requests\SurveyUpdateRequest;
 use App\Http\Resources\SurveyResource;
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class SurveyController extends Controller
@@ -27,7 +28,7 @@ class SurveyController extends Controller
         return SurveyResource::collection(
             Survey::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
-                ->paginate(10)
+                ->paginate(2)
         );
     }
 
@@ -143,19 +144,17 @@ class SurveyController extends Controller
 
     private function saveImage($image)
     {
-        //Check if image is valid base64 string 
+        // Check if image is valid base64 string
         if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
             // Take out the base64 encoded text without mime type
             $image = substr($image, strpos($image, ',') + 1);
-
             // Get file extension
-            $type = strtolower($type[1]);
+            $type = strtolower($type[1]); // jpg, png, gif
 
-            // Check if file is image
+            // Check if file is an image
             if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
                 throw new \Exception('invalid image type');
             }
-
             $image = str_replace(' ', '+', $image);
             $image = base64_decode($image);
 
@@ -170,11 +169,9 @@ class SurveyController extends Controller
         $file = Str::random() . '.' . $type;
         $absolutePath = public_path($dir);
         $relativePath = $dir . $file;
-
         if (!File::exists($absolutePath)) {
             File::makeDirectory($absolutePath, 0755, true);
         }
-
         file_put_contents($relativePath, $image);
 
         return $relativePath;

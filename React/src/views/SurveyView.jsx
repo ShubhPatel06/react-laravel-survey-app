@@ -4,8 +4,6 @@ import TButton from "../components/core/TButton";
 import PageComponent from "../components/PageComponent";
 import axiosClient from "../axios.js";
 import { useNavigate, useParams } from "react-router-dom";
-// import SurveyQuestions from "../components/SurveyQuestions";
-// import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
 import { useStateContext } from "../contexts/ContextProvider";
 import SurveyQuestions from "../components/SurveyQuestions";
@@ -77,9 +75,10 @@ export default function SurveyView() {
         });
     };
 
-    function onSurveyUpdate(survey) {
+    function onQuestionsUpdate(questions) {
         setSurvey({
             ...survey,
+            questions,
         });
     }
 
@@ -279,8 +278,8 @@ export default function SurveyView() {
                                 Add question
                             </button>
                             <SurveyQuestions
-                                survey={survey}
-                                onSurveyUpdate={onSurveyUpdate}
+                                questions={survey.questions}
+                                onQuestionsUpdate={onQuestionsUpdate}
                             />
                         </div>
                         <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">

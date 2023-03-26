@@ -18,7 +18,7 @@ export default function SurveyListItem({ survey, onDeleteClick }) {
             ></div>
 
             <div className="flex justify-between items-center mt-3">
-                <TButton to={`survey/${survey.id}`}>
+                <TButton to={`/survey/${survey.id}`}>
                     <PencilIcon className="w-5 h-5 mr-2" />
                     Edit
                 </TButton>
