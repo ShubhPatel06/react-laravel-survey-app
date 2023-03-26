@@ -18,7 +18,7 @@ export default function SurveyListItem({ survey, onDeleteClick }) {
             ></div>
 
             <div className="flex justify-between items-center mt-3">
-                <TButton to={`/survey/${survey.id}`}>
+                <TButton to={`/surveys/${survey.id}`}>
                     <PencilIcon className="w-5 h-5 mr-2" />
                     Edit
                 </TButton>
@@ -29,7 +29,9 @@ export default function SurveyListItem({ survey, onDeleteClick }) {
 
                     {survey.id && (
                         <TButton
-                            onClick={onDeleteClick}
+                            onClick={() => {
+                                onDeleteClick(survey.id);
+                            }}
                             circle
                             link
                             color="red"
