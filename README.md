@@ -1,4 +1,4 @@
-This is Laravel + React and Tailwind CSS Survey Application with CRUD functinalities.
+This is Laravel + React and Tailwind CSS Survey Application with CRUD functionalities.
 
 The functionalities include:
 
